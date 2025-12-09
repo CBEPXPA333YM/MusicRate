@@ -2,9 +2,12 @@ package com.example.api_test.api.apiService
 
 import android.util.Log
 import com.example.api_test.api.apiModels.AlbumResponse
+import com.example.api_test.api.apiModels.AlbumSearchResponse
 import com.example.api_test.api.apiModels.ArtistResponse
+import com.example.api_test.api.apiModels.ArtistSearchResponse
 import com.example.api_test.api.apiModels.Track
 import com.example.api_test.api.apiModels.TrackResponse
+import com.example.api_test.api.apiModels.TrackSearchResponse
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -25,24 +28,6 @@ class LastFmService(
         )
         .create()
 
-
-    // Старый fetch
-    /*private suspend fun fetch(method: String, params: Map<String, String>): String? =
-        withContext(Dispatchers.IO) {
-
-            val encodedParams = params
-                .map { (key, value) -> "$key=${urlEncode(value)}" }
-                .joinToString("&")
-
-            val url =
-                "https://ws.audioscrobbler.com/2.0/?method=$method&$encodedParams&api_key=$apiKey&format=json"
-
-            val request = Request.Builder().url(url).build()
-
-            val response = client.newCall(request).execute()
-            response.body?.string()
-        } */
-
     private suspend fun fetch(method: String, params: Map<String, String>): String? =
         withContext(Dispatchers.IO) {
             val encodedParams = params
@@ -58,8 +43,6 @@ class LastFmService(
             Log.d("LastFm", "← Получено JSON: $body")
             body
         }
-
-
 
     suspend fun getArtistInfo(artist: String): ArtistResponse? {
         val json = fetch(
@@ -94,4 +77,41 @@ class LastFmService(
     // --- Кодирование URL ---
     private fun urlEncode(s: String): String =
         URLEncoder.encode(s, "UTF-8")
+
+    // --- Функции умного поиска ---
+
+    suspend fun searchArtists(query: String, limit: Int = 20): ArtistSearchResponse? {
+        val json = fetch(
+            method = "artist.search",
+            params = mapOf(
+                "artist" to query,
+                "limit" to limit.toString()
+            )
+        )
+        return json?.let { gson.fromJson(it, ArtistSearchResponse::class.java) }
+
+    }
+
+    suspend fun searchAlbums(query: String, limit: Int = 20): AlbumSearchResponse? {
+        val json = fetch(
+            method = "album.search",
+            params = mapOf(
+                "album" to query,
+                "limit" to limit.toString()
+            )
+        )
+        return json?.let { gson.fromJson(it, AlbumSearchResponse::class.java) }
+    }
+
+    suspend fun searchTracks(query: String, limit: Int = 20): TrackSearchResponse? {
+        val json = fetch(
+            method = "track.search",
+            params = mapOf(
+                "track" to query,
+                "limit" to limit.toString()
+            )
+        )
+        Log.d("LastFm", "← Получено JSON: $json")
+        return json?.let { gson.fromJson(it, TrackSearchResponse::class.java) }
+    }
 }

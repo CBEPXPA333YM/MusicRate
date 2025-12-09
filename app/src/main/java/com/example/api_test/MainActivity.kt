@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.remember
 import com.example.api_test.ui.MusicSearchScreen
+import com.example.api_test.ui.SmartSearchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
             val viewModel = remember { MusicViewModel() }
             MaterialTheme {
                 // Вызываем экран
-                MusicSearchScreen(viewModel)
+                SmartSearchScreen(viewModel)
             }
         }
     }

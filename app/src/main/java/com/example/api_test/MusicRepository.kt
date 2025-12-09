@@ -6,7 +6,7 @@ import com.example.api_test.api.apiModels.ArtistResponse
 import com.example.api_test.api.apiModels.TrackResponse
 
 class MusicRepository(
-    private val api: LastFmService
+    val api: LastFmService
 ) {
 
     /** Получить артиста */
