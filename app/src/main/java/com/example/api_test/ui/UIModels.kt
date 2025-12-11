@@ -10,3 +10,9 @@ data class TrackUi(
     val name: String,
     val url: String?
 )
+
+data class SmartItem(
+    val title: String,
+    val subtitle: String? = null,
+    val imageUrl: String? = null
+)

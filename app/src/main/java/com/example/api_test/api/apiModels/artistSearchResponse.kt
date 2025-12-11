@@ -1,5 +1,7 @@
 package com.example.api_test.api.apiModels
 
+import com.google.gson.annotations.SerializedName
+
 data class ArtistSearchResponse(
     val results: ArtistResults
 )
@@ -14,5 +16,12 @@ data class ArtistMatches(
 
 data class ArtistMini(
     val name: String,
-    val listeners: String? = null
+    val listeners: String? = null,
+    val image: List<ArtistImageDto>?
+)
+
+data class ArtistImageDto(
+    @SerializedName("#text")
+    val url: String?,
+    val size: String?
 )

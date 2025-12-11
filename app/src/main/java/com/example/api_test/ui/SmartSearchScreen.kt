@@ -19,10 +19,10 @@ fun SmartSearchScreen(viewModel: MusicViewModel) {
     var query by remember { mutableStateOf("") }
     var mode by remember { mutableStateOf(SmartSearchMode.ARTIST) }
 
-    // РЕЗУЛЬТАТЫ ПОИСКА
-    var resultsState by remember { mutableStateOf<List<String>>(emptyList()) }
+    // Результаты как список SmartItem
+    var resultsState by remember { mutableStateOf<List<SmartItem>>(emptyList()) }
 
-    // ОШИБКА
+    // Ошибка
     var errorState by remember { mutableStateOf<String?>(null) }
 
     Column(
@@ -65,7 +65,7 @@ fun SmartSearchScreen(viewModel: MusicViewModel) {
 
         Spacer(Modifier.height(16.dp))
 
-        // КНОПКА ПОИСКА
+        // Кнопка "Искать"
         Button(
             onClick = {
                 if (query.isBlank()) return@Button
@@ -73,24 +73,21 @@ fun SmartSearchScreen(viewModel: MusicViewModel) {
                 when (mode) {
 
                     SmartSearchMode.ARTIST ->
-                        viewModel.searchArtists(query) { results ->
-                            resultsState = results
-                            errorState =
-                                if (results.isEmpty()) "Ничего не найдено" else null
+                        viewModel.searchArtistsItems(query) { items ->
+                            resultsState = items
+                            errorState = if (items.isEmpty()) "Ничего не найдено" else null
                         }
 
                     SmartSearchMode.TRACK ->
-                        viewModel.searchTracks(query) { results ->
-                            resultsState = results
-                            errorState =
-                                if (results.isEmpty()) "Ничего не найдено" else null
+                        viewModel.searchTracksItems(query) { items ->
+                            resultsState = items
+                            errorState = if (items.isEmpty()) "Ничего не найдено" else null
                         }
 
                     SmartSearchMode.ALBUM ->
-                        viewModel.searchAlbums(query) { results ->
-                            resultsState = results
-                            errorState =
-                                if (results.isEmpty()) "Ничего не найдено" else null
+                        viewModel.searchAlbumsItems(query) { items ->
+                            resultsState = items
+                            errorState = if (items.isEmpty()) "Ничего не найдено" else null
                         }
                 }
             },
@@ -104,17 +101,18 @@ fun SmartSearchScreen(viewModel: MusicViewModel) {
         Text("Результаты:", style = MaterialTheme.typography.h6)
         Spacer(Modifier.height(8.dp))
 
-        //  ОШИБКА
+        // Ошибка
         errorState?.let {
             Text(it, color = MaterialTheme.colors.error)
             Spacer(Modifier.height(8.dp))
         }
 
-        // СПИСОК
-        LazyColumn {
+        // СПИСОК SmartItem → SmartCard
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
             items(resultsState) { item ->
-                Text(item)
-                Divider()
+                SmartCard(item = item)
             }
         }
     }

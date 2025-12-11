@@ -1,5 +1,7 @@
 package com.example.api_test.api.apiModels
 
+import com.google.gson.annotations.SerializedName
+
 data class AlbumSearchResponse(
     val results: AlbumResultsSearch
 )
@@ -14,5 +16,12 @@ data class AlbumMatches(
 
 data class AlbumMini(
     val name: String,
-    val artist: String
+    val artist: String,
+    val image: List<AlbumImageDto>?
+)
+
+data class AlbumImageDto(
+    @SerializedName("#text")
+    val url: String?,
+    val size: String?
 )
