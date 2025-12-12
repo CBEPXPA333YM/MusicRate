@@ -7,14 +7,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.api_test.MusicViewModel
+import com.example.api_test.DeezerViewModel
+
 
 enum class SmartSearchMode {
     ARTIST, TRACK, ALBUM
 }
 
 @Composable
-fun SmartSearchScreen(viewModel: MusicViewModel) {
+fun SmartSearchScreen(viewModel: DeezerViewModel) {
 
     var query by remember { mutableStateOf("") }
     var mode by remember { mutableStateOf(SmartSearchMode.ARTIST) }

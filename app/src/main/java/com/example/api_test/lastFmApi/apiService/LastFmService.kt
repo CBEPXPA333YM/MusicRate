@@ -1,13 +1,13 @@
-package com.example.api_test.api.apiService
+package com.example.api_test.lastFmApi.apiService
 
 import android.util.Log
-import com.example.api_test.api.apiModels.AlbumResponse
-import com.example.api_test.api.apiModels.AlbumSearchResponse
-import com.example.api_test.api.apiModels.ArtistResponse
-import com.example.api_test.api.apiModels.ArtistSearchResponse
-import com.example.api_test.api.apiModels.Track
-import com.example.api_test.api.apiModels.TrackResponse
-import com.example.api_test.api.apiModels.TrackSearchResponse
+import com.example.api_test.lastFmApi.apiModels.AlbumResponse
+import com.example.api_test.lastFmApi.apiModels.AlbumSearchResponse
+import com.example.api_test.lastFmApi.apiModels.ArtistResponse
+import com.example.api_test.lastFmApi.apiModels.ArtistSearchResponse
+import com.example.api_test.lastFmApi.apiModels.Track
+import com.example.api_test.lastFmApi.apiModels.TrackResponse
+import com.example.api_test.lastFmApi.apiModels.TrackSearchResponse
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers

@@ -1,9 +1,9 @@
-package com.example.api_test
+package com.example.api_test.lastFmViewModel
 
-import com.example.api_test.api.apiService.LastFmService
-import com.example.api_test.api.apiModels.AlbumResponse
-import com.example.api_test.api.apiModels.ArtistResponse
-import com.example.api_test.api.apiModels.TrackResponse
+import com.example.api_test.lastFmApi.apiModels.AlbumResponse
+import com.example.api_test.lastFmApi.apiModels.ArtistResponse
+import com.example.api_test.lastFmApi.apiModels.TrackResponse
+import com.example.api_test.lastFmApi.apiService.LastFmService
 
 class MusicRepository(
     val api: LastFmService

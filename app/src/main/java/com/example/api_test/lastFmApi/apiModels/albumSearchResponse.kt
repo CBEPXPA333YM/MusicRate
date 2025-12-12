@@ -1,4 +1,4 @@
-package com.example.api_test.api.apiModels
+package com.example.api_test.lastFmApi.apiModels
 
 import com.google.gson.annotations.SerializedName
 

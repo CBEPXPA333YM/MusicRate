@@ -1,16 +1,19 @@
-package com.example.api_test
+package com.example.api_test.lastFmViewModel
+
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.api_test.api.apiModels.Track
-import com.example.api_test.api.apiService.LastFmService
+import com.example.api_test.lastFmViewModel.MusicRepository
+import com.example.api_test.lastFmApi.apiModels.Track
+import com.example.api_test.lastFmApi.apiService.LastFmService
 import com.example.api_test.ui.AlbumInfoUi
 import com.example.api_test.ui.SmartItem
 import com.example.api_test.ui.TrackUi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-class MusicViewModel(
+
+class LastFMViewModel(
     private val repo: MusicRepository = MusicRepository(LastFmService("8bb705611e38d1e368dd0328499c53c2"))
 ) : ViewModel() {
     var result: String = ""
