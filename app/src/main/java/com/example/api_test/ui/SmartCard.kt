@@ -12,17 +12,17 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 @Composable
-fun SmartCard(item: SmartItem, onClick: () -> Unit = {}) {
+fun SmartCard(item: SmartItem, onClick: () -> Unit) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
             .clickable { onClick() },
-        elevation = 6.dp,
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(modifier = Modifier.padding(12.dp)) {
-            // Image (left)
+
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = null,
@@ -33,11 +33,10 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit = {}) {
 
             Spacer(Modifier.width(12.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = item.title, style = MaterialTheme.typography.subtitle1)
+            Column(Modifier.weight(1f)) {
+                Text(item.title, style = MaterialTheme.typography.subtitle1)
                 item.subtitle?.let {
-                    Spacer(Modifier.height(4.dp))
-                    Text(text = it, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f))
+                    Text(it, style = MaterialTheme.typography.body1)
                 }
             }
         }

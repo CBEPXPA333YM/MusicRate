@@ -16,6 +16,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -39,6 +41,7 @@ android {
         compose = true
     }
 
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.12"
     }
@@ -47,6 +50,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation("androidx.appcompat:appcompat:1.7.1")
     implementation(libs.material)
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
