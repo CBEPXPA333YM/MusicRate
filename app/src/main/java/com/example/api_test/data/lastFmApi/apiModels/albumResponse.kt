@@ -1,5 +1,5 @@
-package com.example.api_test.api.apiModels
-import com.example.api_test.api.apiService.TrackListDeserializer
+package com.example.api_test.data.lastFmApi.apiModels
+import com.example.api_test.data.lastFmApi.apiService.TrackListDeserializer
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 

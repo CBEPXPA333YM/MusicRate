@@ -1,13 +1,13 @@
-package com.example.api_test.api.apiService
+package com.example.api_test.data.lastFmApi.apiService
 
 import android.util.Log
-import com.example.api_test.api.apiModels.AlbumResponse
-import com.example.api_test.api.apiModels.AlbumSearchResponse
-import com.example.api_test.api.apiModels.ArtistResponse
-import com.example.api_test.api.apiModels.ArtistSearchResponse
-import com.example.api_test.api.apiModels.Track
-import com.example.api_test.api.apiModels.TrackResponse
-import com.example.api_test.api.apiModels.TrackSearchResponse
+import com.example.api_test.data.lastFmApi.apiModels.AlbumResponse
+import com.example.api_test.data.lastFmApi.apiModels.AlbumSearchResponse
+import com.example.api_test.data.lastFmApi.apiModels.ArtistResponse
+import com.example.api_test.data.lastFmApi.apiModels.ArtistSearchResponse
+import com.example.api_test.data.lastFmApi.apiModels.Track
+import com.example.api_test.data.lastFmApi.apiModels.TrackResponse
+import com.example.api_test.data.lastFmApi.apiModels.TrackSearchResponse
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ class LastFmService(
     private val client = OkHttpClient()
     private val gson = GsonBuilder()
         .registerTypeAdapter(
-            object : TypeToken<List<Track>>() {}.type,
+            object : com.google.gson.reflect.TypeToken<List<Track>>() {}.type,
             TrackListDeserializer()
         )
         .create()

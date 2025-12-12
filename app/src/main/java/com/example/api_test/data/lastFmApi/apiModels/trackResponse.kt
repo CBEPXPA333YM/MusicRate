@@ -1,4 +1,4 @@
-package com.example.api_test.api.apiModels
+package com.example.api_test.data.lastFmApi.apiModels
 
 data class TrackResponse(
     val track: TrackInfo?

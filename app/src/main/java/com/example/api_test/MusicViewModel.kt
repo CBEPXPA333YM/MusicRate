@@ -1,222 +1,99 @@
 package com.example.api_test
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.api_test.api.apiModels.Track
-import com.example.api_test.api.apiService.LastFmService
-import com.example.api_test.ui.AlbumInfoUi
+import com.example.api_test.data.spotifyApi.SpotifyRepository
 import com.example.api_test.ui.SmartItem
-import com.example.api_test.ui.TrackUi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+
+
 class MusicViewModel(
-    private val repo: MusicRepository = MusicRepository(LastFmService("8bb705611e38d1e368dd0328499c53c2"))
+    private val repo: SpotifyRepository
 ) : ViewModel() {
-    var result: String = ""
-        private set
 
-    // СТАРЫЙ ПОИСК
-    fun searchAlbum(
-        artist: String,
-        album: String,
-        onSuccess: (AlbumInfoUi) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val albumInfo = withContext(Dispatchers.IO) {
-                    repo.getAlbum(artist, album)
-                }
-                if (albumInfo?.album == null) {
-                    onError("Альбом не найден")
-                    return@launch
-                }
-                val alb = albumInfo.album
-                // Достаём обложку
-                val cover = alb.image?.find { it.size == "extralarge" }?.url
-                    ?: alb.image?.lastOrNull()?.url
-                // Нормализуем треки
-                val rawTracks = alb.tracks?.track
-                val trackList = when (rawTracks) {
-                    is List<*> -> rawTracks.filterIsInstance<Track>()
-                    is Track -> listOf(rawTracks)
-                    else -> emptyList()
-                }
-                // Создаём UI-модель
-                val uiModel = AlbumInfoUi(
-                    name = alb.name ?: "Без названия",
-                    coverUrl = cover,
-                    trackCount = trackList.size,
-                    tracks = trackList.map {
-                        TrackUi(
-                            name = it.name ?: "Без имени",
-                            url = it.url ?: ""
-                        )
-                    }
-                )
-                onSuccess(uiModel)
-            } catch (e: Exception) {
-                onError("Ошибка: ${e.message}")
-            }
-        }
-    }
-
-    /** Основной результат поиска (строки для UI) */
-    var smartResults: List<String> = emptyList()
-        private set
-
-    /** Ошибки */
-    var errorMessage: String? = null
-        private set
-
-    /** ----------------------------
-     *  Умный поиск исполнителей
-     * ---------------------------- */
-    fun searchArtists(query: String, onResult: (List<String>) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val data = withContext(Dispatchers.IO) {
-                    repo.api.searchArtists(query)
-                }
-                val artists = data
-                    ?.results
-                    ?.artistmatches
-                    ?.artist
-                    ?: emptyList()
-
-                val sortedArtists = artists.sortedByDescending { it.listeners?.toIntOrNull() ?: 0}
-                val artistStrings = sortedArtists.mapNotNull { artist ->
-                    if (artist.name != null) {
-                        "${artist.name}, слушателей: ${artist.listeners}"
-                    } else null
-                }
-                smartResults = artistStrings
-                onResult(smartResults)
-
-
-
-            } catch (e: Exception) {
-                errorMessage = e.message
-                onResult(emptyList())
-            }
-        }
-    }
-
-    /** ----------------------------
-     *  Умный поиск альбомов
-     * ---------------------------- */
-    fun searchAlbums(query: String, onResult: (List<String>) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val data = withContext(Dispatchers.IO) {
-                    repo.api.searchAlbums(query)
-                }
-                val albums = data
-                    ?.results
-                    ?.albummatches
-                    ?.album
-                    ?.mapNotNull { "${it.artist} — ${it.name}" }
-                    ?: emptyList()
-
-                smartResults = albums
-                onResult(albums)
-
-            } catch (e: Exception) {
-                errorMessage = e.message
-                onResult(emptyList())
-            }
-        }
-    }
-
-    /** ----------------------------
-     *  Умный поиск треков
-     * ---------------------------- */
-    fun searchTracks(query: String, onResult: (List<String>) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val data = withContext(Dispatchers.IO) {
-                    repo.api.searchTracks(query)
-                }
-                val tracks = data
-                    ?.results
-                    ?.trackmatches
-                    ?.track
-                    ?: emptyList()
-                val sortedTracks = tracks.sortedByDescending { it.listeners?.toIntOrNull() ?: 0}
-                val trackStrings = sortedTracks.mapNotNull { track ->
-                    if (track.name != null && track.artist != null) {
-                        "${track.artist} — ${track.name}, прослушиваний: ${track.listeners}"
-                    } else null
-                }
-                smartResults = trackStrings
-                onResult(smartResults)
-
-            } catch (e: Exception) {
-                errorMessage = e.message
-                onResult(emptyList())
-            }
-        }
-    }
-
-    // --- ПОИСК С КАРТИНКАМИ ---
-
+    // -------------------------------------------------------------
+    // Artists
+    // -------------------------------------------------------------
     fun searchArtistsItems(query: String, onResult: (List<SmartItem>) -> Unit) {
         viewModelScope.launch {
             try {
-                val data = withContext(Dispatchers.IO) {
-                    repo.api.searchArtists(query)
+                val response = withContext(Dispatchers.IO) {
+                    repo.searchArtists(query)
                 }
-                val artists = data?.results?.artistmatches?.artist ?: emptyList()
-                val sorted = artists.sortedByDescending { it.listeners?.toIntOrNull() ?: 0 }
-                val items = sorted.map { a ->
+
+                val artists = response?.artists?.items ?: emptyList()
+
+                val items = artists.map { artist ->
                     SmartItem(
-                        title = a.name ?: "Без имени",
-                        subtitle = "Слушателей: ${a.listeners ?: "?"}",
-                        imageUrl = a.image?.lastOrNull()?.url
+                        title = artist.name ?: "Без названия",
+                        subtitle = "Популярность: ${artist.popularity ?: 0}",
+                        imageUrl = artist.images?.firstOrNull()?.url // Spotify → full image
                     )
                 }
-                Log.d("LastFm", "← Получено: $items")
+
                 onResult(items)
+
             } catch (e: Exception) {
                 onResult(emptyList())
             }
         }
     }
 
+    // -------------------------------------------------------------
+    // Albums
+    // -------------------------------------------------------------
     fun searchAlbumsItems(query: String, onResult: (List<SmartItem>) -> Unit) {
         viewModelScope.launch {
             try {
-                val data = withContext(Dispatchers.IO) { repo.api.searchAlbums(query) }
-                val albums = data?.results?.albummatches?.album ?: emptyList()
-                val items = albums.map { al ->
+                val response = withContext(Dispatchers.IO) {
+                    repo.searchAlbums(query)
+                }
+
+                val albums = response?.albums?.items ?: emptyList()
+
+                val items = albums.map { album ->
                     SmartItem(
-                        title = al.name ?: "Без названия",
-                        subtitle = al.artist,
-                        imageUrl = al.image?.lastOrNull()?.url
+                        title = album.name ?: "Без названия",
+                        subtitle = album.artists?.joinToString { it.name ?: "" },
+                        imageUrl = album.images?.firstOrNull()?.url
                     )
                 }
+
                 onResult(items)
+
             } catch (e: Exception) {
                 onResult(emptyList())
             }
         }
     }
 
+    // -------------------------------------------------------------
+    // Tracks
+    // -------------------------------------------------------------
     fun searchTracksItems(query: String, onResult: (List<SmartItem>) -> Unit) {
         viewModelScope.launch {
             try {
-                val data = withContext(Dispatchers.IO) { repo.api.searchTracks(query) }
-                val tracks = data?.results?.trackmatches?.track ?: emptyList()
-                val sorted = tracks.sortedByDescending { it.listeners?.toIntOrNull() ?: 0 }
-                val items = sorted.map { t ->
+                val response = withContext(Dispatchers.IO) {
+                    repo.searchTracks(query)
+                }
+
+                val tracks = response?.tracks?.items ?: emptyList()
+
+                val sorted = tracks.sortedByDescending { it.popularity ?: 0 }
+
+                val items = sorted.map { track ->
                     SmartItem(
-                        title = t.name ?: "Без названия",
-                        subtitle = t.artist,
-                        imageUrl = t.image?.lastOrNull()?.url // may be null
+                        title = track.name ?: "Без названия",
+                        subtitle = track.artists?.joinToString { it.name ?: "" },
+                        imageUrl = track.album?.images?.firstOrNull()?.url
                     )
                 }
+
                 onResult(items)
+
             } catch (e: Exception) {
                 onResult(emptyList())
             }

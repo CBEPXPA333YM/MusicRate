@@ -1,6 +1,6 @@
-package com.example.api_test.api.apiService
+package com.example.api_test.data.lastFmApi.apiService
 
-import com.example.api_test.api.apiModels.Track
+import com.example.api_test.data.lastFmApi.apiModels.Track
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

@@ -1,11 +1,11 @@
 package com.example.api_test
 
-import com.example.api_test.api.apiService.LastFmService
-import com.example.api_test.api.apiModels.AlbumResponse
-import com.example.api_test.api.apiModels.ArtistResponse
-import com.example.api_test.api.apiModels.TrackResponse
+import com.example.api_test.data.lastFmApi.apiService.LastFmService
+import com.example.api_test.data.lastFmApi.apiModels.AlbumResponse
+import com.example.api_test.data.lastFmApi.apiModels.ArtistResponse
+import com.example.api_test.data.lastFmApi.apiModels.TrackResponse
 
-class MusicRepository(
+class LastFmMusicRepository(
     val api: LastFmService
 ) {
 
