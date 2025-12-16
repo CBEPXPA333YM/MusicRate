@@ -8,12 +8,8 @@ import com.example.api_test.ui.SmartType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.Long
 
-enum class SmartType{
-    ARTIST,
-    ALBUM,
-    TRACK
-}
 
 class DeezerViewModel(
     private val repo: DeezerService = DeezerService()
@@ -34,6 +30,7 @@ class DeezerViewModel(
                 val items = artists.map { ar ->
                     SmartItem(
                         type = SmartType.ARTIST,
+                        id = ar.id,
                         title = ar.name,
                         subtitle = "Artist",
                         imageUrl = ar.picture_medium
@@ -63,6 +60,7 @@ class DeezerViewModel(
                 val items = albums.map { al ->
                     SmartItem(
                         type = SmartType.ALBUM,
+                        id = al.id,
                         title = al.title,
                         subtitle = al.artist?.name ?: "Unknown artist",
                         imageUrl = al.cover_medium
@@ -92,10 +90,15 @@ class DeezerViewModel(
                 val items = tracks.map { tr ->
                     SmartItem(
                         type = SmartType.TRACK,
+                        id = tr.id,
                         title = tr.title,
                         subtitle = tr.artist?.name ?: "Unknown artist",
                         imageUrl = tr.album?.cover_medium,
-                        previewUrl = tr.preview // 30 сек. превью Deezer
+                        previewUrl = tr.preview, // 30 сек. превью Deezer
+                        artistId = tr.artist?.id,
+                        artistName = tr.artist?.name,
+                        albumId = tr.album?.id,
+                        albumTitle = tr.album?.title
                     )
                 }
 
@@ -106,4 +109,5 @@ class DeezerViewModel(
             }
         }
     }
+
 }

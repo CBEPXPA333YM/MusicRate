@@ -22,7 +22,7 @@ import com.example.api_test.ui.SmartType
 fun SmartSearchScreen(viewModel: DeezerViewModel) {
 
     var query by remember { mutableStateOf("") }
-    var mode by remember { mutableStateOf(SmartType.ARTIST) }
+    var mode by remember { mutableStateOf(SmartType.TRACK) }
     var resultsState by remember { mutableStateOf<List<SmartItem>>(emptyList()) }
     var errorState by remember { mutableStateOf<String?>(null) }
 
