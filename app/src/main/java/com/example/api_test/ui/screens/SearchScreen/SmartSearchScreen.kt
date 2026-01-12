@@ -1,4 +1,4 @@
-package com.example.api_test.ui.screens
+package com.example.api_test.ui.screens.SearchScreen
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*

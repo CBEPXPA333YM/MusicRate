@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.api_test.ui.SmartType
-import com.example.api_test.ui.screens.DetailsScreen
+import com.example.api_test.ui.screens.SearchScreen.DetailsScreen
 
 
 class ArtistDetailsActivity : ComponentActivity() {
