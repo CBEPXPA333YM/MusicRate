@@ -1,12 +1,36 @@
 package com.example.api_test.localdb.db
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.api_test.localdb.dao.FavoriteDao
-import com.example.api_test.localdb.entity.FavoriteEntity
+import com.example.api_test.localdb.dao.FavoritesDao
+import com.example.api_test.localdb.entity.FavoritesEntity
+import com.example.api_test.localdb.SmartTypeConverter
 
-@Database(entities = [FavoriteEntity::class], version = 1)
-abstract class RoomDatabase : RoomDatabase() {
-    abstract fun favoriteDao(): FavoriteDao
+@Database(
+    entities = [FavoritesEntity::class],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(SmartTypeConverter::class)
+abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun favoritesDao(): FavoritesDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "favorites_db"
+                ).build().also { INSTANCE = it }
+            }
+        }
+    }
 }

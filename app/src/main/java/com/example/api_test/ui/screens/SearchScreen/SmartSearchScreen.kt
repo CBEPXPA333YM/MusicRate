@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.api_test.DeezerViewModel
+import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.details.AlbumDetailsActivity
 import com.example.api_test.details.ArtistDetailsActivity
 import com.example.api_test.details.TrackDetailsActivity

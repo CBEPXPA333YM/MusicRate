@@ -13,13 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.api_test.localdb.FavoritesViewModel
+import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.ui.SmartType
 
 @Composable
 fun DetailsScreen(
+    id: Long,
     title: String,
     imageUrl: String,
-    type: SmartType
+    type: SmartType,
+    favoritesViewModel: FavoritesViewModel = viewModel()
 ) {
 
     val subtitle = when (type) {
@@ -31,7 +36,7 @@ fun DetailsScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding(), // 👈 важно
+            .systemBarsPadding(),
         topBar = {
             TopAppBar(title = { Text(title) })
         }
@@ -40,11 +45,12 @@ fun DetailsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(scaffoldPadding), // safe area для top bar
+                .padding(scaffoldPadding),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             item {
                 AsyncImage(
                     model = imageUrl,
@@ -58,12 +64,23 @@ fun DetailsScreen(
             }
 
             item {
-                Button(onClick = { /* TODO: add to favorites */ }) {
+                Button(
+                    onClick = {
+                        favoritesViewModel.addFavorite(
+                            FavoritesEntity(
+                                id = id,
+                                title = title,
+                                type = type,
+                                subtitle = subtitle,
+                                imageUrl = imageUrl,
+                            )
+                        )
+                    }
+                ) {
                     Text("Добавить в избранное")
                 }
             }
-
-            // сюда можно добавлять items(...) для треков/альбомов
         }
     }
 }
+

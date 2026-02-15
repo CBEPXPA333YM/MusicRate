@@ -7,7 +7,7 @@ import com.example.api_test.ui.SmartType
     tableName = "favorites",
     primaryKeys = ["id", "type"]
 )
-data class FavoriteEntity(
+data class FavoritesEntity(
     val id: Long,
     val type: SmartType,
     val title: String,

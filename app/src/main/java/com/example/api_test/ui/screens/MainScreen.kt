@@ -11,19 +11,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.api_test.DeezerViewModel
+import com.example.api_test.deezerApi.DeezerViewModel
+import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.ui.screens.SearchScreen.SmartSearchScreen
 
 
 @Composable
-fun MainScreen(viewModel: DeezerViewModel) {
-
+fun MainScreen(
+    deezerViewModel: DeezerViewModel,
+    favoritesViewModel: FavoritesViewModel
+) {
     val navController = rememberNavController()
 
     Scaffold(
         modifier = Modifier
-        .fillMaxSize()
-        .systemBarsPadding(),
+            .fillMaxSize()
+            .systemBarsPadding(),
         bottomBar = {
             BottomNavigation {
                 listOf(
@@ -52,13 +55,14 @@ fun MainScreen(viewModel: DeezerViewModel) {
         ) {
 
             composable(BottomScreen.Search.route) {
-                SmartSearchScreen(viewModel)
+                SmartSearchScreen(deezerViewModel)
             }
 
             composable(BottomScreen.Collection.route) {
-                CollectionScreen()
+                CollectionScreen(favoritesViewModel)
             }
         }
     }
 }
+
 

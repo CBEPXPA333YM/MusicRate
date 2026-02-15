@@ -1,4 +1,4 @@
-package com.example.api_test
+package com.example.api_test.deezerApi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +8,6 @@ import com.example.api_test.ui.SmartType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.Long
-
 
 class DeezerViewModel(
     private val repo: DeezerService = DeezerService()
