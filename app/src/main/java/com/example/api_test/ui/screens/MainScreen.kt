@@ -31,7 +31,7 @@ fun MainScreen(
             BottomNavigation {
                 listOf(
                     BottomScreen.Search,
-                    BottomScreen.Collection
+                    BottomScreen.Favorites
                 ).forEach { screen ->
                     BottomNavigationItem(
                         icon = { Icon(screen.icon, null) },
@@ -58,8 +58,8 @@ fun MainScreen(
                 SmartSearchScreen(deezerViewModel)
             }
 
-            composable(BottomScreen.Collection.route) {
-                CollectionScreen(favoritesViewModel)
+            composable(BottomScreen.Favorites.route) {
+                FavoritesScreen(favoritesViewModel)
             }
         }
     }
