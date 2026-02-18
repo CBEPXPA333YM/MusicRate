@@ -9,10 +9,6 @@ class FavoritesRepository(
     private val favoriteDao: FavoritesDao
 ) {
 
-    // Получить все избранные
-    val allFavorites: Flow<List<FavoritesEntity>> =
-        favoriteDao.getAll()
-
     // Проверка избранного
     fun isFavorite(id: Long, type: SmartType): Flow<Boolean> =
         favoriteDao.isFavorite(id, type)
@@ -26,4 +22,6 @@ class FavoritesRepository(
     suspend fun deleteFavorites(item: FavoritesEntity) {
         favoriteDao.delete(item)
     }
+
+    fun getAllFavorites():  Flow<List<FavoritesEntity>> = favoriteDao.getAll()
 }

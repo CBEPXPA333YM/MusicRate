@@ -17,14 +17,6 @@ class FavoritesViewModel(
     private val repository: FavoritesRepository
 ) : ViewModel() {
 
-    val favorites: StateFlow<List<FavoritesEntity>> =
-        repository.allFavorites
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = emptyList()
-            )
-
     fun addFavorite(item: FavoritesEntity) {
         viewModelScope.launch {
             repository.insertFavorites(item)
@@ -40,4 +32,9 @@ class FavoritesViewModel(
     fun isFavorite(id: Long, type: SmartType): Flow<Boolean> {
         return repository.isFavorite(id, type)
     }
+
+    fun getAllFavorites(): Flow<List<FavoritesEntity>> {
+        return repository.getAllFavorites()
+    }
+
 }

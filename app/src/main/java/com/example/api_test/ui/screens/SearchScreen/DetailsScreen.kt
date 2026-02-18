@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.entity.FavoritesEntity
@@ -32,6 +34,9 @@ fun DetailsScreen(
         SmartType.ALBUM -> "Album"
         SmartType.TRACK -> "Track"
     }
+
+    // 👇 Проверяем, в избранном ли
+    val isFavorite by favoritesViewModel.isFavorite(id, type).collectAsState(initial = false)
 
     Scaffold(
         modifier = Modifier
@@ -66,21 +71,27 @@ fun DetailsScreen(
             item {
                 Button(
                     onClick = {
-                        favoritesViewModel.addFavorite(
-                            FavoritesEntity(
-                                id = id,
-                                title = title,
-                                type = type,
-                                subtitle = subtitle,
-                                imageUrl = imageUrl,
-                            )
+                        val entity = FavoritesEntity(
+                            id = id,
+                            title = title,
+                            type = type,
+                            subtitle = subtitle,
+                            imageUrl = imageUrl
                         )
+
+                        if (isFavorite) {
+                            favoritesViewModel.removeFavorite(entity)
+                        } else {
+                            favoritesViewModel.addFavorite(entity)
+                        }
                     }
                 ) {
-                    Text("Добавить в избранное")
+                    Text(
+                        if (isFavorite) "Удалить из избранного"
+                        else "Добавить в избранное"
+                    )
                 }
             }
         }
     }
 }
-
