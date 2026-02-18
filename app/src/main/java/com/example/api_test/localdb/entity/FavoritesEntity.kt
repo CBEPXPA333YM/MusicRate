@@ -1,6 +1,7 @@
 package com.example.api_test.localdb.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.api_test.ui.SmartType
 
 @Entity(

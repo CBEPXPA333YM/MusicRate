@@ -19,10 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.api_test.details.AlbumDetailsActivity
+import com.example.api_test.details.ArtistDetailsActivity
+import com.example.api_test.details.TrackDetailsActivity
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.ui.SmartCard
 import com.example.api_test.ui.SmartItem
+import com.example.api_test.ui.SmartType
 
 fun FavoritesEntity.toSmartItem(): SmartItem {
     return SmartItem(
@@ -44,13 +47,13 @@ fun FavoritesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Favorites") }) // можно заменить на любой заголовок
+            TopAppBar(title = { Text("Favorites") })
         }
-    ) { paddingValues -> // безопасные отступы для topBar
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues), // учёт TopAppBar
+                .padding(paddingValues),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -59,15 +62,22 @@ fun FavoritesScreen(
                 val item = entity.toSmartItem()
 
                 SmartCard(item = item) {
-                    val intent = Intent(context, AlbumDetailsActivity::class.java).apply {
+                    // Выбираем правильный экран в зависимости от типа
+                    val intent = when (item.type) {
+                        SmartType.ARTIST -> Intent(context, ArtistDetailsActivity::class.java)
+                        SmartType.ALBUM  -> Intent(context, AlbumDetailsActivity::class.java)
+                        SmartType.TRACK  -> Intent(context, TrackDetailsActivity::class.java)
+                    }.apply {
                         putExtra("id", item.id)
                         putExtra("title", item.title)
                         putExtra("image", item.imageUrl)
                         putExtra("type", item.type.name)
                     }
+
                     context.startActivity(intent)
                 }
             }
         }
     }
 }
+
