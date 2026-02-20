@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavoritesDao {
 
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
     suspend fun insert(item: FavoritesEntity)
 
-    @Delete
-    suspend fun delete(item: FavoritesEntity)
+    @Query("DELETE FROM favorites WHERE id=:id AND type=:type")
+    suspend fun delete(id: Long, type: SmartType): Int
 
     @Query("SELECT * FROM favorites")
     fun getAll(): Flow<List<FavoritesEntity>>

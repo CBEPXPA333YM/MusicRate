@@ -4,12 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.localdb.repo.FavoritesRepository
-import com.example.api_test.ui.SmartItem
 import com.example.api_test.ui.SmartType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 

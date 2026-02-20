@@ -60,7 +60,6 @@ fun FavoritesScreen(
         ) {
             items(favorites) { entity ->
                 val item = entity.toSmartItem()
-
                 SmartCard(item = item) {
                     // Выбираем правильный экран в зависимости от типа
                     val intent = when (item.type) {

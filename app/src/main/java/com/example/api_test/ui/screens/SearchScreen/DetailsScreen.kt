@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.ui.SmartType
+import android.util.Log
 
 @Composable
 fun DetailsScreen(
@@ -35,8 +36,10 @@ fun DetailsScreen(
         SmartType.TRACK -> "Track"
     }
 
-    // 👇 Проверяем, в избранном ли
+    //  Проверяем, в избранном ли
     val isFavorite by favoritesViewModel.isFavorite(id, type).collectAsState(initial = false)
+    Log.d("ID", "id = $id")
+    Log.d("TITLE", "title = $title")
 
     Scaffold(
         modifier = Modifier
@@ -84,11 +87,13 @@ fun DetailsScreen(
                         } else {
                             favoritesViewModel.addFavorite(entity)
                         }
+                        Log.d("FAV", "Entity = $entity")
                     }
                 ) {
                     Text(
                         if (isFavorite) "Удалить из избранного"
                         else "Добавить в избранное"
+
                     )
                 }
             }
