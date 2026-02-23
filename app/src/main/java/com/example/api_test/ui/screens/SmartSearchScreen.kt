@@ -1,4 +1,4 @@
-package com.example.api_test.ui.screens.SearchScreen
+package com.example.api_test.ui.screens
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.api_test.deezerApi.DeezerViewModel
@@ -52,24 +53,31 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
 
             // --- Кнопки режимов ---
             Row(Modifier.fillMaxWidth()) {
-                Button(
+
+                ModeButton(
+                    text = "Исполнитель",
+                    selected = mode == SmartType.ARTIST,
                     onClick = { mode = SmartType.ARTIST },
                     modifier = Modifier.weight(1f)
-                ) { Text("Исполнитель") }
+                )
 
                 Spacer(Modifier.width(8.dp))
 
-                Button(
+                ModeButton(
+                    text = "Трек",
+                    selected = mode == SmartType.TRACK,
                     onClick = { mode = SmartType.TRACK },
                     modifier = Modifier.weight(1f)
-                ) { Text("Трек") }
+                )
 
                 Spacer(Modifier.width(8.dp))
 
-                Button(
+                ModeButton(
+                    text = "Альбом",
+                    selected = mode == SmartType.ALBUM,
                     onClick = { mode = SmartType.ALBUM },
                     modifier = Modifier.weight(1f)
-                ) { Text("Альбом") }
+                )
             }
 
             Spacer(Modifier.height(16.dp))
@@ -138,5 +146,26 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ModeButton(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (selected)
+                MaterialTheme.colors.primary
+            else
+                Color.LightGray
+        )
+    ) {
+        Text(text)
     }
 }

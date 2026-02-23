@@ -1,4 +1,4 @@
-package com.example.api_test.ui.screens.SearchScreen
+package com.example.api_test.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +20,9 @@ import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.ui.SmartType
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun DetailsScreen(
@@ -36,6 +39,8 @@ fun DetailsScreen(
         SmartType.TRACK -> "Track"
     }
 
+    var rating by remember { mutableStateOf(5f) } // по умолчанию 5 из 10
+
     //  Проверяем, в избранном ли
     val isFavorite by favoritesViewModel.isFavorite(id, type).collectAsState(initial = false)
     Log.d("ID", "id = $id")
@@ -46,7 +51,7 @@ fun DetailsScreen(
             .fillMaxSize()
             .systemBarsPadding(),
         topBar = {
-            TopAppBar(title = { Text(title) })
+            TopAppBar(title = { Text(subtitle) })
         }
     ) { scaffoldPadding ->
 
@@ -68,7 +73,18 @@ fun DetailsScreen(
             }
 
             item {
-                Text(text = subtitle, style = MaterialTheme.typography.body1)
+                Text(text = title, style = MaterialTheme.typography.body1)
+            }
+            
+            item {
+                Text("Ваша оценка: ${rating.toInt()}", style = MaterialTheme.typography.h6)
+
+                Slider(
+                    value = rating,
+                    onValueChange = { rating = it },
+                    valueRange = 1f..10f,
+                    steps = 8 // 2..9
+                )
             }
 
             item {

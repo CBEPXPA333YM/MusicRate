@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.localdb.FavoritesViewModel
-import com.example.api_test.ui.screens.SearchScreen.SmartSearchScreen
 
 
 @Composable

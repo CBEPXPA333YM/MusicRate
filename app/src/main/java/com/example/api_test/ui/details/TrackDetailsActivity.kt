@@ -9,7 +9,7 @@ import com.example.api_test.localdb.FavoritesViewModelFactory
 import com.example.api_test.localdb.db.AppDatabase
 import com.example.api_test.localdb.repo.FavoritesRepository
 import com.example.api_test.ui.SmartType
-import com.example.api_test.ui.screens.SearchScreen.DetailsScreen
+import com.example.api_test.ui.screens.DetailsScreen
 
 
 class TrackDetailsActivity : ComponentActivity() {
