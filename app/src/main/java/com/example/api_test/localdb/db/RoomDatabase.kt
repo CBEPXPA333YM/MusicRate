@@ -11,9 +11,10 @@ import com.example.api_test.localdb.SmartTypeConverter
 
 @Database(
     entities = [FavoritesEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
+
 @TypeConverters(SmartTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -29,7 +30,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "favorites_db"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration()
+                    .build().also { INSTANCE = it }
             }
         }
     }

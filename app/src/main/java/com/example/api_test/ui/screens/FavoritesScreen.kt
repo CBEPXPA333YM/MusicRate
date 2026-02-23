@@ -44,7 +44,8 @@ fun FavoritesEntity.toSmartItem(): SmartItem {
         title = title,
         imageUrl = imageUrl,
         subtitle = subtitle,
-        type = type )
+        type = type,
+        rating = rating)
 }
 
 @Composable

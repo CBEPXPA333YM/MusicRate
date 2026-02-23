@@ -85,6 +85,7 @@ fun DetailsScreen(
                     valueRange = 1f..10f,
                     steps = 8 // 2..9
                 )
+
             }
 
             item {
@@ -95,7 +96,8 @@ fun DetailsScreen(
                             title = title,
                             type = type,
                             subtitle = subtitle,
-                            imageUrl = imageUrl
+                            imageUrl = imageUrl,
+                            rating = rating.toInt()
                         )
 
                         if (isFavorite) {

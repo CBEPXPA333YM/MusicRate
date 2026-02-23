@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -23,13 +24,16 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = LocalIndication.current
-            ) {
-                onClick()
-            },
-        shape = RoundedCornerShape(12.dp)
+            ) { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        elevation = 4.dp
     ) {
-        Row(modifier = Modifier.padding(12.dp)) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
+            // --- Картинка ---
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = null,
@@ -40,10 +44,32 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
 
             Spacer(Modifier.width(12.dp))
 
-            Column(Modifier.weight(1f)) {
+            // --- Тексты ---
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(item.title, style = MaterialTheme.typography.subtitle1)
                 item.subtitle?.let {
-                    Text(it, style = MaterialTheme.typography.body1)
+                    Text(it, style = MaterialTheme.typography.body2)
+                }
+            }
+
+            // --- Рейтинг справа ---
+            item.rating?.let { rating ->
+                Spacer(Modifier.width(8.dp))
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "$rating/10",
+                        style = MaterialTheme.typography.h6,
+                        color = MaterialTheme.colors.primary
+                    )
+                    Text(
+                        text = "Оценка",
+                        style = MaterialTheme.typography.caption
+                    )
                 }
             }
         }

@@ -6,6 +6,7 @@ data class SmartItem(
     val title: String,
     val subtitle: String? = null,
     val imageUrl: String? = null,
+    var rating: Int? = null,
 
     //для Track
     val previewUrl: String? = null,

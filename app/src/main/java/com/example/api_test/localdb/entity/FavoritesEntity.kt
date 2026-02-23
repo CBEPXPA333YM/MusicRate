@@ -13,5 +13,6 @@ data class FavoritesEntity(
     val type: SmartType,
     val title: String,
     val subtitle: String?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val rating: Int?
 )
