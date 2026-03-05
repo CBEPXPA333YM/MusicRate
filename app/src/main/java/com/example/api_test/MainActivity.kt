@@ -12,24 +12,9 @@ import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.FavoritesViewModelFactory
 import com.example.api_test.localdb.db.AppDatabase
 import com.example.api_test.localdb.repo.FavoritesRepository
+import com.example.api_test.nowPlaying.NowPlayingViewModel
 import com.example.api_test.ui.screens.MainScreen
 
-/*class MainActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
-
-        setContent {
-            val viewModel = remember { DeezerViewModel() }
-
-            MaterialTheme {
-                MainScreen(viewModel = viewModel)
-            }
-        }
-    }
-}*/
 
 class MainActivity : ComponentActivity() {
 
@@ -45,11 +30,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val deezerViewModel: DeezerViewModel = viewModel()
             val favoritesViewModel: FavoritesViewModel = viewModel(factory = factory)
+            val nowPlayingViewModel: NowPlayingViewModel = viewModel()
 
             MaterialTheme {
                 MainScreen(
                     deezerViewModel = deezerViewModel,
-                    favoritesViewModel = favoritesViewModel
+                    favoritesViewModel = favoritesViewModel,
+                    nowPlayingViewModel = nowPlayingViewModel
                 )
             }
         }

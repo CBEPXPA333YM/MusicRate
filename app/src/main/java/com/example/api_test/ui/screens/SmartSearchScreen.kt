@@ -121,8 +121,8 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(resultsState) { item ->
-                    SmartCard(item = item) {
-                        when (item.type) {
+                    SmartCard(item = item, onClick = {
+                        when (item.type){
                             SmartType.ARTIST -> context.startActivity(
                                 Intent(context, ArtistDetailsActivity::class.java)
                                     .putExtra("id", item.id)
@@ -143,6 +143,7 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
                         )
                         }
                     }
+                    )
                 }
             }
         }
