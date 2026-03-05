@@ -12,12 +12,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.localdb.FavoritesViewModel
+import com.example.api_test.nowPlaying.NowPlayingViewModel
 
 
 @Composable
 fun MainScreen(
     deezerViewModel: DeezerViewModel,
-    favoritesViewModel: FavoritesViewModel
+    favoritesViewModel: FavoritesViewModel,
+    nowPlayingViewModel: NowPlayingViewModel
 ) {
     val navController = rememberNavController()
 
@@ -28,6 +30,7 @@ fun MainScreen(
         bottomBar = {
             BottomNavigation {
                 listOf(
+                    BottomScreen.NowPlaying,
                     BottomScreen.Search,
                     BottomScreen.Favorites
                 ).forEach { screen ->
@@ -51,6 +54,10 @@ fun MainScreen(
                 .padding(padding)
                 .fillMaxSize()
         ) {
+
+            composable(BottomScreen.NowPlaying.route) {
+                NowPlayingScreen(nowPlayingViewModel)
+            }
 
             composable(BottomScreen.Search.route) {
                 SmartSearchScreen(deezerViewModel)
