@@ -1,5 +1,7 @@
 package com.example.api_test.ui
 
+import android.graphics.Bitmap
+
 data class SmartItem(
     val type: SmartType,
     val id: Long,
@@ -13,5 +15,7 @@ data class SmartItem(
     val artistId: Long? = null,
     val artistName: String? = null,
     val albumId: Long? = null,
-    val albumTitle: String? = null
+    val albumTitle: String? = null,
+
+    val artwork: Bitmap? = null
 )

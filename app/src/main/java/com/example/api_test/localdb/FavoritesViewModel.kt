@@ -6,6 +6,8 @@ import com.example.api_test.localdb.entity.FavoritesEntity
 import com.example.api_test.localdb.repo.FavoritesRepository
 import com.example.api_test.ui.SmartType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 
@@ -33,4 +35,23 @@ class FavoritesViewModel(
         return repository.getAllFavorites()
     }
 
+    fun getFavorite(id: Long, type: SmartType): Flow<FavoritesEntity?> {
+        return repository.getFavorite(id, type)
+    }
+
+    fun updateRating(id: Long, type: SmartType, rating: Int) {
+        ratingUpdates.tryEmit(Triple(id, type, rating))
+    }
+
+    private val ratingUpdates = MutableSharedFlow<Triple<Long, SmartType, Int>>(extraBufferCapacity = 1)
+
+    init {
+        viewModelScope.launch {
+            ratingUpdates
+                .debounce(400)
+                .collect { (id, type, rating) ->
+                    repository.updateRating(id, type, rating)
+                }
+        }
+    }
 }

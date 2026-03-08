@@ -28,4 +28,12 @@ class FavoritesRepository(
     }
 
     fun getAllFavorites():  Flow<List<FavoritesEntity>> = favoriteDao.getAll()
+
+    fun getFavorite(id: Long, type: SmartType): Flow<FavoritesEntity?> {
+        return favoriteDao.getFavorite(id, type)
+    }
+
+    suspend fun updateRating(id: Long, type: SmartType, rating: Int) {
+        favoriteDao.updateRating(id, type, rating)
+    }
 }

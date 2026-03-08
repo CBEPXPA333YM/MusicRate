@@ -15,6 +15,13 @@ interface FavoritesDao {
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
     suspend fun insert(item: FavoritesEntity)
 
+    @Query("""
+    UPDATE favorites 
+    SET rating = :rating 
+    WHERE id = :id AND type = :type
+""")
+    suspend fun updateRating(id: Long, type: SmartType, rating: Int)
+
     @Query("DELETE FROM favorites WHERE id=:id AND type=:type")
     suspend fun delete(id: Long, type: SmartType): Int
 
@@ -23,4 +30,7 @@ interface FavoritesDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE id=:id AND type=:type)")
     fun isFavorite(id: Long, type: SmartType): Flow<Boolean>
+
+    @Query("SELECT * FROM favorites WHERE id = :id AND type = :type LIMIT 1")
+    fun getFavorite(id: Long, type: SmartType): Flow<FavoritesEntity?>
 }
