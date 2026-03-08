@@ -25,17 +25,6 @@ fun NowPlayingScreen(viewModel: NowPlayingViewModel) {
         viewModel.loadNowPlaying()
     }
 
-    /*track?.let {
-        SmartCard(item = it, onClick = {
-            context.startActivity(
-                Intent(context, TrackDetailsActivity::class.java)
-                    .putExtra("id", it.id)
-                    .putExtra("title", it.title)
-                    .putExtra("image", it.imageUrl))
-        }
-        )
-    }*/
-
     val deezerViewModel: DeezerViewModel = viewModel()
 
     track?.let { trackItem ->

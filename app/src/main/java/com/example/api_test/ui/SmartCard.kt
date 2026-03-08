@@ -1,5 +1,6 @@
 package com.example.api_test.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
@@ -34,13 +36,20 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
         ) {
 
             // --- Картинка ---
+            if (item.artwork != null) {
+                Image(
+                    bitmap = item.artwork.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp)
+                )
+            } else {
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(64.dp)
                     .clip(RoundedCornerShape(8.dp))
-            )
+            )}
 
             Spacer(Modifier.width(12.dp))
 
