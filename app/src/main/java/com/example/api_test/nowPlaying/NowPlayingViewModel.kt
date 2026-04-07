@@ -72,11 +72,15 @@ class NowPlayingViewModel(application: Application) : AndroidViewModel(applicati
         val artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART)
             ?: metadata.getBitmap(MediaMetadata.METADATA_KEY_ART)
 
+        val track_title = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+
+        if (track_title.isNullOrBlank()) return null
+
         return SmartItem(
             id = (metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
                     + metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)).hashCode().toLong(),
             type = SmartType.TRACK,
-            title = metadata.getString(MediaMetadata.METADATA_KEY_TITLE) ?: "Unknown",
+            title = track_title,
             subtitle = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: "",
             imageUrl = null,
             rating = null,
