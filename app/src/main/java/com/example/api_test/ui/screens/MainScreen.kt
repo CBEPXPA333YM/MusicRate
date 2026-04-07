@@ -13,13 +13,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.nowPlaying.NowPlayingViewModel
+import com.example.api_test.recommendationsApi.RecommendationsViewModel
 
 
 @Composable
 fun MainScreen(
     deezerViewModel: DeezerViewModel,
     favoritesViewModel: FavoritesViewModel,
-    nowPlayingViewModel: NowPlayingViewModel
+    nowPlayingViewModel: NowPlayingViewModel,
+    recommendationsViewModel: RecommendationsViewModel
 ) {
     val navController = rememberNavController()
 
@@ -32,7 +34,8 @@ fun MainScreen(
                 listOf(
                     BottomScreen.NowPlaying,
                     BottomScreen.Search,
-                    BottomScreen.Favorites
+                    BottomScreen.Favorites,
+                    BottomScreen.Recommendations
                 ).forEach { screen ->
                     BottomNavigationItem(
                         icon = { Icon(screen.icon, null) },
@@ -66,6 +69,11 @@ fun MainScreen(
             composable(BottomScreen.Favorites.route) {
                 FavoritesScreen(favoritesViewModel)
             }
+
+            composable(BottomScreen.Recommendations.route) {
+                RecommendationsScreen(recommendationsViewModel)
+            }
+
         }
     }
 }

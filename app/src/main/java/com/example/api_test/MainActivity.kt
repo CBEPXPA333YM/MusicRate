@@ -13,6 +13,9 @@ import com.example.api_test.localdb.FavoritesViewModelFactory
 import com.example.api_test.localdb.db.AppDatabase
 import com.example.api_test.localdb.repo.FavoritesRepository
 import com.example.api_test.nowPlaying.NowPlayingViewModel
+import com.example.api_test.recommendationsApi.RecommendationsService
+import com.example.api_test.recommendationsApi.RecommendationsViewModel
+import com.example.api_test.recommendationsApi.RecommendationsViewModelFactory
 import com.example.api_test.ui.screens.MainScreen
 
 
@@ -26,17 +29,28 @@ class MainActivity : ComponentActivity() {
         val db = AppDatabase.getDatabase(applicationContext)
         val repository = FavoritesRepository(db.favoritesDao())
         val factory = FavoritesViewModelFactory(repository)
+        val favoritesDao = db.favoritesDao()
+        val recommendationsRepo = RecommendationsService()
+        val recommendationsFactory =
+            RecommendationsViewModelFactory(
+                repo = recommendationsRepo,
+                favoritesDao = favoritesDao
+            )
 
         setContent {
             val deezerViewModel: DeezerViewModel = viewModel()
             val favoritesViewModel: FavoritesViewModel = viewModel(factory = factory)
             val nowPlayingViewModel: NowPlayingViewModel = viewModel()
+            val recommendationsViewModel: RecommendationsViewModel = viewModel(
+                factory = recommendationsFactory
+            )
 
             MaterialTheme {
                 MainScreen(
                     deezerViewModel = deezerViewModel,
                     favoritesViewModel = favoritesViewModel,
-                    nowPlayingViewModel = nowPlayingViewModel
+                    nowPlayingViewModel = nowPlayingViewModel,
+                    recommendationsViewModel = recommendationsViewModel
                 )
             }
         }
