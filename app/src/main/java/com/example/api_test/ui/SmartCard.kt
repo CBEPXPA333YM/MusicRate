@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 @Composable
-fun SmartCard(item: SmartItem, onClick: () -> Unit) {
+fun SmartCard(item: SmartItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
             .clickable(
@@ -31,7 +31,7 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
         elevation = 4.dp
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -40,24 +40,25 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
                 Image(
                     bitmap = item.artwork.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.size(64.dp)
+                    modifier = modifier.size(64.dp)
                 )
             } else {
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = null,
-                modifier = Modifier
+                modifier = modifier
                     .size(64.dp)
                     .clip(RoundedCornerShape(8.dp))
             )}
 
-            Spacer(Modifier.width(12.dp))
+            Spacer(modifier.width(12.dp))
 
             // --- Тексты ---
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = modifier.weight(1f)
             ) {
-                Text(item.title, style = MaterialTheme.typography.subtitle1)
+                Text(item.title,
+                    style = MaterialTheme.typography.subtitle2)
                 item.subtitle?.let {
                     Text(it, style = MaterialTheme.typography.body2)
                 }
@@ -65,7 +66,7 @@ fun SmartCard(item: SmartItem, onClick: () -> Unit) {
 
             // --- Рейтинг справа ---
             item.rating?.let { rating ->
-                Spacer(Modifier.width(8.dp))
+                Spacer(modifier.width(8.dp))
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally

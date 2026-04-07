@@ -6,51 +6,75 @@ import android.content.Context
 import android.media.MediaMetadata
 import android.media.session.MediaSessionManager
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.api_test.ui.SmartItem
 import com.example.api_test.ui.SmartType
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class NowPlayingViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _track = MutableStateFlow<SmartItem?>(null)
-    val track: StateFlow<SmartItem?> = _track
+    private val context = application
 
-    fun loadNowPlaying() {
+    private val _tracks = MutableStateFlow<List<SmartItem>>(emptyList())
+    val tracks: StateFlow<List<SmartItem>> = _tracks
 
-        val context = getApplication<Application>()
+    init {
+        viewModelScope.launch {
+            while (true) {
+                val newTrack = getNowPlaying()
 
-        // Проверяем, включен ли доступ к уведомлениям
-        val enabled = androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages(context)
+                newTrack?.let { track ->
+                    _tracks.update { current ->
+
+                        val isSame =
+                            current.firstOrNull()?.title == track.title &&
+                                    current.firstOrNull()?.subtitle == track.subtitle
+
+                        if (isSame) {
+                            current
+                        } else {
+                            listOf(track) + current.take(19)
+                        }
+                    }
+                }
+
+                delay(5000)
+            }
+        }
+    }
+
+    private fun getNowPlaying(): SmartItem? {
+
+        val enabled = NotificationManagerCompat
+            .getEnabledListenerPackages(context)
             .contains(context.packageName)
 
-        if (!enabled) {
-            Log.e("NOWPLAYING", "Notification access NOT granted")
-            _track.value = null
-            return
-        }
+        if (!enabled) return null
 
         val manager = context.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
         val component = ComponentName(context, MediaNotificationListener::class.java)
 
-        // Получаем активные сессии безопасно
         val sessions = try {
             manager.getActiveSessions(component)
         } catch (e: SecurityException) {
-            Log.e("NOWPLAYING", "No notification access")
-            return
+            return null
         }
 
-        val controller = sessions.firstOrNull() ?: return
-        val metadata = controller.metadata ?: return
+        val controller = sessions.firstOrNull() ?: return null
+        val metadata = controller.metadata ?: return null
 
         val artwork = metadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART)
             ?: metadata.getBitmap(MediaMetadata.METADATA_KEY_ART)
 
-        // Создаём SmartItem
-        val item = SmartItem(
-            id = 0,
+        return SmartItem(
+            id = (metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+                    + metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)).hashCode().toLong(),
             type = SmartType.TRACK,
             title = metadata.getString(MediaMetadata.METADATA_KEY_TITLE) ?: "Unknown",
             subtitle = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: "",
@@ -58,8 +82,5 @@ class NowPlayingViewModel(application: Application) : AndroidViewModel(applicati
             rating = null,
             artwork = artwork
         )
-
-        _track.value = item
     }
-
 }
