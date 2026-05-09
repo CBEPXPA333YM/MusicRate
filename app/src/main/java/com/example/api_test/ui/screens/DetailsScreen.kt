@@ -27,11 +27,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
 import android.app.Activity
+import android.content.Context
 import androidx.compose.runtime.LaunchedEffect
-import com.example.api_test.localdb.repo.FavoritesRepository
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.debounce
+import android.content.Intent
+import android.net.Uri
+import java.net.URLEncoder
+import androidx.compose.ui.platform.LocalContext
 
+fun openInYandexMusic(
+    context: Context,
+    title: String
+) {
+    val query = URLEncoder.encode(title, "UTF-8")
+
+    val url = "https://music.yandex.ru/search?text=$query"
+
+    val intent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse(url)
+    )
+
+    context.startActivity(intent)
+}
 @Composable
 fun DetailsScreen(
     id: Long,
@@ -158,6 +175,15 @@ fun DetailsScreen(
                         else "Добавить в избранное"
 
                     )
+                }
+            }
+            item {
+                Button(
+                    onClick = {
+                        openInYandexMusic(context, title)
+                    }
+                ) {
+                    Text("Искать в Яндекс Музыке")
                 }
             }
         }
