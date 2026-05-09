@@ -3,6 +3,7 @@ package com.example.api_test.recommendationsApi
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api_test.data.deezerApi.ApiService.DeezerService
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.dao.FavoritesDao
 import com.example.api_test.ui.SmartItem
@@ -15,9 +16,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class RecommendationsViewModel(
     private val repo: RecommendationsService = RecommendationsService(),
+    private val deezerService: DeezerService = DeezerService(),
     private val favoritesDao: FavoritesDao
 ) : ViewModel() {
 
@@ -58,15 +63,55 @@ class RecommendationsViewModel(
                 }
                 Log.d("RECS_VM", "ЗАПУСТИЛОСЬ2")
                 // 4. map → SmartItem
-                val items = response?.map {
-                    SmartItem(
-                        id = 0,
-                        type = SmartType.TRACK,
-                        title = it.track_name,
-                        subtitle = it.track_artist,
-                        imageUrl = null
-                    )
-                } ?: emptyList()
+                val items = response?.let { recommendations ->
+
+                    coroutineScope {
+
+                        recommendations.map { rec ->
+
+                            async(Dispatchers.IO) {
+
+                                try {
+
+                                    val query =
+                                        "${rec.track_name} ${rec.track_artist}"
+
+                                    val deezerResults =
+                                        deezerService.searchTracks(query)
+
+                                    val first = deezerResults?.data?.firstOrNull()
+
+                                    SmartItem(
+                                        id = first?.id ?: 0,
+                                        type = SmartType.TRACK,
+                                        title = first?.title ?: rec.track_name,
+                                        subtitle = first?.artist?.name ?: rec.track_artist,
+                                        imageUrl = first?.album?.cover_medium
+                                    )
+
+                                } catch (e: Exception) {
+
+                                    Log.e(
+                                        "RECS_VM",
+                                        "DEEZER SEARCH FAILED",
+                                        e
+                                    )
+
+                                    SmartItem(
+                                        id = 0,
+                                        type = SmartType.TRACK,
+                                        title = rec.track_name,
+                                        subtitle = rec.track_artist,
+                                        imageUrl = null
+                                    )
+                                }
+                            }
+
+                        }.awaitAll()
+
+                    }
+
+                } ?: emptyList() ?: emptyList()
                 Log.d("RECS_VM", "ЗАПУСТИЛОСЬ3")
                 Log.d("RECS_VM", "Loaded items: ${items.size}")
 

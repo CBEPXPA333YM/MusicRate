@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.api_test.data.deezerApi.ApiService.DeezerService
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.localdb.FavoritesViewModel
 import com.example.api_test.localdb.FavoritesViewModelFactory
@@ -31,9 +32,11 @@ class MainActivity : ComponentActivity() {
         val factory = FavoritesViewModelFactory(repository)
         val favoritesDao = db.favoritesDao()
         val recommendationsRepo = RecommendationsService()
+        val deezerService = DeezerService()
         val recommendationsFactory =
             RecommendationsViewModelFactory(
                 repo = recommendationsRepo,
+                deezerService = deezerService,
                 favoritesDao = favoritesDao
             )
 
