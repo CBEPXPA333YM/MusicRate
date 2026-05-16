@@ -23,6 +23,7 @@ class AlbumDetailsActivity : ComponentActivity() {
         val id = intent.getLongExtra("id", 0L)
         val title = intent.getStringExtra("title") ?: ""
         val image = intent.getStringExtra("image") ?: ""
+        val subtitle = intent.getStringExtra("subtitle") ?: ""
 
         setContent {
             val favoritesViewModel: FavoritesViewModel =
@@ -31,6 +32,7 @@ class AlbumDetailsActivity : ComponentActivity() {
             DetailsScreen(
                 id = id,
                 title = title,
+                subtitle = subtitle,
                 imageUrl = image,
                 type = SmartType.ALBUM,
                 favoritesViewModel = favoritesViewModel

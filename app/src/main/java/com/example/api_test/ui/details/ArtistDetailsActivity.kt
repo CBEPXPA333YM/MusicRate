@@ -32,6 +32,7 @@ class ArtistDetailsActivity : ComponentActivity() {
             DetailsScreen(
                 id = id,
                 title = title,
+                subtitle = title,
                 imageUrl = image,
                 type = SmartType.ARTIST,
                 favoritesViewModel = favoritesViewModel

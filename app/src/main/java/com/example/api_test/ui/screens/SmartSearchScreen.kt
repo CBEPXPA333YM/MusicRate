@@ -131,18 +131,21 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
                                     .putExtra("id", item.id)
                                     .putExtra("title", item.title)
                                     .putExtra("image", item.imageUrl)
+                                    .putExtra("subtitle", item.artistName)
                             )
                             SmartType.ALBUM -> context.startActivity(
                                 Intent(context, AlbumDetailsActivity::class.java)
                                     .putExtra("id", item.id)
                                     .putExtra("title", item.title)
                                     .putExtra("image", item.imageUrl)
+                                    .putExtra("subtitle", item.artistName)
                                 )
                                 SmartType.TRACK -> context.startActivity(
                             Intent(context, TrackDetailsActivity::class.java)
                                 .putExtra("id", item.id)
                                 .putExtra("title", item.title)
                                 .putExtra("image", item.imageUrl)
+                                .putExtra("subtitle", item.artistName)
                         )
                         }
                     }

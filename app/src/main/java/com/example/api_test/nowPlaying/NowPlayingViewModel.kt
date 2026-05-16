@@ -81,7 +81,7 @@ class NowPlayingViewModel(application: Application) : AndroidViewModel(applicati
                     + metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)).hashCode().toLong(),
             type = SmartType.TRACK,
             title = track_title,
-            subtitle = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: "",
+            subtitle = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: "тут ошибка",
             imageUrl = null,
             rating = null,
             artwork = artwork

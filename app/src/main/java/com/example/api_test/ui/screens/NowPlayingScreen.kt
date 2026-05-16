@@ -137,6 +137,7 @@ private fun openDetails(
                 .putExtra("id", firstTrack.id)
                 .putExtra("title", firstTrack.title)
                 .putExtra("image", firstTrack.imageUrl)
+                .putExtra("subtitle", firstTrack.subtitle)
         )
     }
 }

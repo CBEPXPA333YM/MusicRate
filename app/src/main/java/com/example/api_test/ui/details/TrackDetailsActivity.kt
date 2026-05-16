@@ -22,8 +22,9 @@ class TrackDetailsActivity : ComponentActivity() {
         val factory = FavoritesViewModelFactory(repository)
 
         val id = intent.getLongExtra("id", 0L)
-        val title = intent.getStringExtra("title") ?: ""
-        val image = intent.getStringExtra("image") ?: ""
+        val title = intent.getStringExtra("title") ?: "не найдено"
+        val image = intent.getStringExtra("image") ?: "не найдено"
+        val subtitle = intent.getStringExtra("subtitle") ?: "не найдено"
 
         setContent {
             val favoritesViewModel: FavoritesViewModel =
@@ -32,6 +33,7 @@ class TrackDetailsActivity : ComponentActivity() {
             DetailsScreen(
                 id = id,
                 title = title,
+                subtitle = subtitle,
                 imageUrl = image,
                 type = SmartType.TRACK,
                 favoritesViewModel = favoritesViewModel

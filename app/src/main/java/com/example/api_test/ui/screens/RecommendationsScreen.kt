@@ -95,6 +95,7 @@ fun RecommendationsScreen(
                                         .putExtra("id", track.id)
                                         .putExtra("title", track.title)
                                         .putExtra("image", track.imageUrl)
+                                        .putExtra("subtitle", item.subtitle)
                                 )
                             }
                         }

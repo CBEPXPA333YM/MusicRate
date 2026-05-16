@@ -1,5 +1,6 @@
 package com.example.api_test.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -18,7 +19,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun SmartCard(item: SmartItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
-
+    
     Card(
         modifier = modifier
             .fillMaxWidth()

@@ -53,16 +53,11 @@ fun openInYandexMusic(
 fun DetailsScreen(
     id: Long,
     title: String,
+    subtitle: String,
     imageUrl: String,
     type: SmartType,
     favoritesViewModel: FavoritesViewModel = viewModel()
 ) {
-
-    val subtitle = when (type) {
-        SmartType.ARTIST -> "Исполнитель"
-        SmartType.ALBUM -> "Альбом"
-        SmartType.TRACK -> "Трек"
-    }
 
     val favoriteEntity by favoritesViewModel
         .getFavorite(id, type)

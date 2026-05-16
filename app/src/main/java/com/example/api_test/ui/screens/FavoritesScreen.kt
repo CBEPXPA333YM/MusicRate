@@ -1,6 +1,7 @@
 package com.example.api_test.ui.screens
 
 import android.content.Intent
+import android.util.Log
 import androidx.benchmark.traceprocessor.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -112,6 +113,7 @@ fun FavoritesScreen(
                             putExtra("title", item.title)
                             putExtra("image", item.imageUrl)
                             putExtra("type", item.type.name)
+                            putExtra("subtitle", item.subtitle?: "Unknown")
                         }
 
                         context.startActivity(intent)
