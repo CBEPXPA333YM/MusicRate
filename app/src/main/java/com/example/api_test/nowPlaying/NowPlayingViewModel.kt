@@ -44,7 +44,7 @@ class NowPlayingViewModel(application: Application) : AndroidViewModel(applicati
                     }
                 }
 
-                delay(5000)
+                delay(1000)
             }
         }
     }
