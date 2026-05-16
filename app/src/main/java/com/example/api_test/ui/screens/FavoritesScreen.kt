@@ -60,7 +60,7 @@ fun FavoritesScreen(
     // 🔹 Состояние фильтра
     var selectedType by remember { mutableStateOf<SmartType?>(null) }
 
-    // 🔹 Фильтрация0
+    // 🔹 Фильтрация
     val filteredFavorites = if (selectedType == null) {
         favorites
     } else {
@@ -69,7 +69,7 @@ fun FavoritesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Favorites") })
+            TopAppBar(title = { Text("Избранное") })
         }
     ) { paddingValues ->
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.details.AlbumDetailsActivity
@@ -31,7 +32,7 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Smart Search") })
+            TopAppBar(title = { Text("Поиск") })
         }
     ) { padding ->
 
@@ -63,6 +64,8 @@ fun SmartSearchScreen(viewModel: DeezerViewModel) {
 
                 Spacer(Modifier.width(8.dp))
 
+
+                
                 ModeButton(
                     text = "Трек",
                     selected = mode == SmartType.TRACK,
@@ -167,6 +170,9 @@ fun ModeButton(
                 Color.LightGray
         )
     ) {
-        Text(text)
+        Text(text = text,
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis)
     }
 }

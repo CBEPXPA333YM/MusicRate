@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,8 +51,12 @@ fun NowPlayingScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = Color.White
-    ) { padding ->
+        backgroundColor = Color.White,
+        topBar = {
+            TopAppBar(title = { androidx.compose.material.Text("Сейчас играет") })
+        }
+    )
+    { padding ->
 
         if (tracks.isEmpty()) {
 

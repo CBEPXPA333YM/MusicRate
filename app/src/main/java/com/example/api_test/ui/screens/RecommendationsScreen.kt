@@ -4,9 +4,11 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,7 +23,7 @@ import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.details.TrackDetailsActivity
 import com.example.api_test.recommendationsApi.RecommendationsViewModel
 import com.example.api_test.ui.SmartCard
-
+import androidx.compose.material.TopAppBar
 
 @Composable
 fun RecommendationsScreen(
@@ -36,48 +38,65 @@ fun RecommendationsScreen(
         viewModel.loadRecommendations()
     }
 
-    when {
-
-        state.isLoading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    androidx.compose.material.Text("Рекомендации")
+                }
+            )
         }
+    ) { padding ->
 
-        state.items.isEmpty() -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("No recommendations yet")
+        when {
+
+            state.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        }
 
-        else -> {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
+            state.items.isEmpty() -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No recommendations yet")
+                }
+            }
 
-                items(state.items) { item ->
+            else -> {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
 
-                    SmartCard(item = item) {
+                    items(state.items) { item ->
 
-                        val query = "${item.title} ${item.subtitle}"
+                        SmartCard(item = item) {
 
-                        deezerVM.searchTracksItems(query) { results ->
+                            val query = "${item.title} ${item.subtitle}"
 
-                            val track = results.firstOrNull() ?: return@searchTracksItems
+                            deezerVM.searchTracksItems(query) { results ->
 
-                            context.startActivity(
-                                Intent(context, TrackDetailsActivity::class.java)
-                                    .putExtra("id", track.id)
-                                    .putExtra("title", track.title)
-                                    .putExtra("image", track.imageUrl)
-                            )
+                                val track = results.firstOrNull() ?: return@searchTracksItems
+
+                                context.startActivity(
+                                    Intent(context, TrackDetailsActivity::class.java)
+                                        .putExtra("id", track.id)
+                                        .putExtra("title", track.title)
+                                        .putExtra("image", track.imageUrl)
+                                )
+                            }
                         }
                     }
                 }

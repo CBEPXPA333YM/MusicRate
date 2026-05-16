@@ -59,9 +59,9 @@ fun DetailsScreen(
 ) {
 
     val subtitle = when (type) {
-        SmartType.ARTIST -> "Artist"
-        SmartType.ALBUM -> "Album"
-        SmartType.TRACK -> "Track"
+        SmartType.ARTIST -> "Исполнитель"
+        SmartType.ALBUM -> "Альбом"
+        SmartType.TRACK -> "Трек"
     }
 
     val favoriteEntity by favoritesViewModel

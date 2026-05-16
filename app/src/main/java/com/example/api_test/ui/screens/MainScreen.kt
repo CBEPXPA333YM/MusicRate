@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.api_test.deezerApi.DeezerViewModel
 import com.example.api_test.localdb.FavoritesViewModel
@@ -29,20 +32,59 @@ fun MainScreen(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding(),
+
         bottomBar = {
+
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+
             BottomNavigation {
+
                 listOf(
                     BottomScreen.NowPlaying,
                     BottomScreen.Search,
                     BottomScreen.Favorites,
                     BottomScreen.Recommendations
                 ).forEach { screen ->
+
                     BottomNavigationItem(
-                        icon = { Icon(screen.icon, null) },
-                        label = { Text(screen.title) },
-                        selected = false,
+                        icon = {
+                            Icon(
+                                imageVector = screen.icon,
+                                contentDescription = screen.title
+                            )
+                        },
+
+                        label = {
+                            Text(
+                                text = screen.title,
+                                maxLines = 1
+                            )
+                        },
+
+                        selected = currentRoute == screen.route,
+
+                        selectedContentColor = Color.White,
+                        unselectedContentColor = Color.LightGray,
+
                         onClick = {
-                            navController.navigate(screen.route)
+
+                            if (currentRoute != screen.route) {
+
+                                navController.navigate(screen.route) {
+
+                                    // чтобы не плодить одинаковые экраны
+                                    launchSingleTop = true
+
+                                    // восстановление состояния
+                                    restoreState = true
+
+                                    // сохранение состояния вкладок
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                }
+                            }
                         }
                     )
                 }
